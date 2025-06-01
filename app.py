@@ -1,21 +1,17 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from PIL import Image
 
-# Título de la aplicación
+# Título principal con descripción
 st.title("📊 Análisis COVID-19 en Chile")
+
 st.markdown("""
-> **El impacto del COVID-19 en Chile**
+**El impacto del COVID-19 en Chile**
 
-Desde la detección de los primeros casos en marzo de 2020, la pandemia del COVID-19 transformó radicalmente la vida en Chile. 
-A lo largo de más de tres años, el país enfrentó múltiples olas de contagios, implementó medidas de confinamiento, 
-suspendió clases presenciales y movilizó uno de los procesos de vacunación más rápidos y masivos de Latinoamérica.
-
-Este análisis busca reflejar los principales datos acumulados de la pandemia, incluyendo la evolución de la vacunación, 
-los fallecimientos registrados y otros indicadores clave que permiten comprender el alcance de esta crisis sanitaria.
+La pandemia del COVID-19 representó uno de los mayores desafíos sanitarios del país en el siglo XXI. 
+Este análisis presenta datos de vacunación, muertes acumuladas, hospitalizaciones y otros indicadores clave 
+para comprender la magnitud de esta crisis sanitaria.
 """)
-
 
 # Cargar datos
 @st.cache_data
@@ -26,27 +22,27 @@ def cargar_datos():
 
 df = cargar_datos()
 
-# Filtrar por país
+# Filtro por país
 paises = df["location"].unique()
 pais = st.selectbox("Selecciona un país:", sorted(paises), index=list(sorted(paises)).index("Chile"))
 df_pais = df[df["location"] == pais]
 
-# Mostrar fechas disponibles
+# Mostrar rango de fechas
 fecha_min = df_pais["date"].min()
 fecha_max = df_pais["date"].max()
 st.write(f"📅 Datos desde: {fecha_min.date()} hasta {fecha_max.date()}")
 
 # Gráfico de vacunación
 st.subheader("💉 Vacunación completa")
-fig1, ax1 = plt.subplots()
-ax1.plot(df_pais["date"], df_pais["people_fully_vaccinated_per_hundred"], color="green")
-ax1.set_xlabel("Fecha")
-ax1.set_ylabel("% población vacunada")
-ax1.set_title("Vacunación completa a lo largo del tiempo")
-st.pyplot(fig1)
+fig, ax = plt.subplots()
+ax.plot(df_pais["date"], df_pais["people_fully_vaccinated_per_hundred"], color="green")
+ax.set_xlabel("Fecha")
+ax.set_ylabel("% población vacunada")
+ax.set_title("Vacunación completa a lo largo del tiempo")
+st.pyplot(fig)
 
 # Gráfico de muertes
-st.subheader("🪦 Muertes acumuladas")
+st.subheader("⚰️ Muertes acumuladas")
 fig2, ax2 = plt.subplots()
 ax2.plot(df_pais["date"], df_pais["total_deaths"], color="red")
 ax2.set_xlabel("Fecha")
@@ -54,7 +50,7 @@ ax2.set_ylabel("Muertes acumuladas")
 ax2.set_title("Muertes acumuladas por COVID-19")
 st.pyplot(fig2)
 
-# Gráfico de hospitalizaciones
+# Gráfico de hospitalizaciones (si hay datos)
 if "hosp_patients" in df_pais.columns and df_pais["hosp_patients"].notna().any():
     st.subheader("🏥 Hospitalizaciones")
     fig3, ax3 = plt.subplots()
@@ -67,15 +63,8 @@ else:
     st.info("No hay datos de hospitalizaciones disponibles para este país.")
 
 # Indicadores clave
-st.subheader("📉 Indicadores clave")
+st.subheader("📌 Indicadores clave")
 ultimo = df_pais[df_pais["date"] == df_pais["date"].max()]
 st.metric("Casos totales", f"{int(ultimo['total_cases'].values[0]):,}")
 st.metric("Muertes totales", f"{int(ultimo['total_deaths'].values[0]):,}")
 st.metric("Vacunados (%)", f"{ultimo['people_fully_vaccinated_per_hundred'].values[0]:.2f}%")
-
-# Imagen del virus y número de contagios
-virus_img = Image.open("covid_virus.png")
-st.image(virus_img, caption="COVID-19", use_column_width=True)
-st.subheader("🦠 Número total de contagios:")
-st.markdown(f"<h2 style='color:red;'>{int(ultimo['total_cases'].values[0]):,}</h2>", unsafe_allow_html=True)
-
