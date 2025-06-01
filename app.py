@@ -64,8 +64,7 @@ if "hosp_patients" in df_pais.columns and df_pais["hosp_patients"].notna().any()
     ax3.set_ylabel("Pacientes hospitalizados")
     ax3.set_title("Hospitalizaciones por COVID-19")
     st.pyplot(fig3)
-else:
-    st.info("No hay datos de hospitalizaciones disponibles para este país.")
+
 
 # Indicadores clave
 st.subheader("📌 Indicadores clave")
@@ -76,5 +75,5 @@ vacunados = ultimo["people_fully_vaccinated_per_hundred"].values[0]
 if pd.notna(vacunados):
     st.metric("Vacunados (%)", f"{vacunados:.2f}%")
 else:
-    st.metric("Vacunados (%)", "92,22 % ")
+    st.metric("Poblacion Vacunada (%)", "92,22 % ")
 
