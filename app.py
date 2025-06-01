@@ -7,7 +7,7 @@ st.title("📊 Análisis COVID-19 en Chile")
 
 from PIL import Image
 ...
-st.image("covid_virus.png", width=100)
+st.image("covid_virus.png", width=200)
 
 
 st.markdown("""
