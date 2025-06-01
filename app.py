@@ -5,6 +5,17 @@ from PIL import Image
 
 # Título de la aplicación
 st.title("📊 Análisis COVID-19 en Chile")
+st.markdown("""
+> **El impacto del COVID-19 en Chile**
+
+Desde la detección de los primeros casos en marzo de 2020, la pandemia del COVID-19 transformó radicalmente la vida en Chile. 
+A lo largo de más de tres años, el país enfrentó múltiples olas de contagios, implementó medidas de confinamiento, 
+suspendió clases presenciales y movilizó uno de los procesos de vacunación más rápidos y masivos de Latinoamérica.
+
+Este análisis busca reflejar los principales datos acumulados de la pandemia, incluyendo la evolución de la vacunación, 
+los fallecimientos registrados y otros indicadores clave que permiten comprender el alcance de esta crisis sanitaria.
+""")
+
 
 # Cargar datos
 @st.cache_data
