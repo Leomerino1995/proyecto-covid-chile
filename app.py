@@ -6,6 +6,20 @@ import matplotlib.pyplot as plt
 # Título de la aplicación
 st.title("📊 Análisis COVID-19 en Chile")
 
+from PIL import Image
+
+# Cargar imagen del virus
+virus_img = Image.open("covid_virus.png")
+
+# Mostrar imagen y número de contagios
+st.image(virus_img, caption="COVID-19", use_column_width=True)
+
+# Mostrar número total de contagios
+total_casos = int(ultimo['total_cases'].values[0])
+st.subheader("🦠 Número total de contagios:")
+st.markdown(f"<h2 style='color:red;'>{total_casos:,}</h2>", unsafe_allow_html=True)
+
+
 @st.cache_data
 def cargar_datos():
     df = pd.read_csv("owid-covid-chile.csv")
