@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 # Título principal con descripción
 st.title("📊 Análisis COVID-19 en Chile")
 
+from PIL import Image
+...
+st.image("covid_virus.png", width=100)
+
+
 st.markdown("""
 **El impacto del COVID-19 en Chile**
 
@@ -67,4 +72,9 @@ st.subheader("📌 Indicadores clave")
 ultimo = df_pais[df_pais["date"] == df_pais["date"].max()]
 st.metric("Casos totales", f"{int(ultimo['total_cases'].values[0]):,}")
 st.metric("Muertes totales", f"{int(ultimo['total_deaths'].values[0]):,}")
-st.metric("Vacunados (%)", f"{ultimo['people_fully_vaccinated_per_hundred'].values[0]:.2f}%")
+vacunados = ultimo["people_fully_vaccinated_per_hundred"].values[0]
+if pd.notna(vacunados):
+    st.metric("Vacunados (%)", f"{vacunados:.2f}%")
+else:
+    st.metric("Vacunados (%)", "Dato no disponible")
+
